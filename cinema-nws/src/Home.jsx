@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Pagination from './components/Pagination';
+import FilmCard from './components/FilmCard';
+import GenreSelector from './components/GenreSelector';
 
 export default function Home() {
     const API_KEY = '18ffbdd4f338668948dfeecc71baa949';
@@ -50,50 +53,24 @@ export default function Home() {
                 <Link to="/recherche">Rechercher</Link>
 
                 <div className="genre-select">
-                    <label htmlFor="genre">Choisir un genre:</label>
-                    <select
-                        id="genre"
-                        value={selectedGenre || ''}
-                        onChange={(e) => setSelectedGenre(e.target.value)}
-                    >
-                        <option value="">Tous les genres</option>
-                        {genres.map((genre) => (
-                            <option key={genre.id} value={genre.id}>
-                                {genre.name}
-                            </option>
-                        ))}
-                    </select>
+                    <GenreSelector
+                        selectedGenre={selectedGenre}
+                        setSelectedGenre={setSelectedGenre}
+                        genres={genres}
+                    />
                 </div>
 
                 <div className='flex flex-wrap'>
                     {movies.map((movie) => (
-                        <div key={movie.id}>
-                            <Link to={`/film/${movie.id}`}>
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                                    alt={movie.title}
-                                />
-                                <p>{movie.title}</p>
-                            </Link>
-                        </div>
+                        <FilmCard key={movie.id} movie={movie} />
                     ))}
                 </div>
 
-                <div>
-                    <button
-                        onClick={() => handlePageChange(-1)}
-                        disabled={currentPage === 1}
-                    >
-                        Précédent
-                    </button>
-                    <span>Page {currentPage} sur {totalPages}</span>
-                    <button
-                        onClick={() => handlePageChange(1)}
-                        disabled={currentPage === totalPages}
-                    >
-                        Suivant
-                    </button>
-                </div>
+                <Pagination
+                    currentPage={currentPage} 
+                    totalPages={totalPages} 
+                    onPageChange={handlePageChange} 
+                />
             </>
         </>
     )
