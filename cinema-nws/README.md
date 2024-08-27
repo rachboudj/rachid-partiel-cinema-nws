@@ -14,7 +14,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur v
 1. **Clonez le dépôt**
 
    ```bash
-   git clone https://github.com/rachboudj/partiel-cinema-nws.git rachid-partiel-cinema-nws
+   git clone https://github.com/rachboudj/rachid-partiel-cinema-nws.git 
    cd rachid-partiel-cinema-nws
 
 
