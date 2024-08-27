@@ -57,46 +57,7 @@ export default function Home() {
     return (
         <>
             <>
-                <div className="search-mode">
-                    {searchMode === 'discover' && (
-                        <button
-                            onClick={() => {
-                                setSearchMode('search');
-                                setCurrentPage(1);
-                            }}
-                            disabled={searchMode === 'search'}
-                        >
-                            Recherche
-                        </button>
-                    )}
-                </div>
-
-                {searchMode === 'search' && (
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Rechercher un film..."
-                            value={searchTerm}
-                            onChange={(e) => {
-                                setSearchTerm(e.target.value);
-                                setCurrentPage(1);
-                            }}
-                        />
-
-                        <button
-                            onClick={() => {
-                                setSearchMode('discover');
-                                setCurrentPage(1);
-                                setSearchTerm('');
-                            }}
-                            disabled={searchMode === 'discover'}
-                        >
-                            Découverte
-                        </button>
-                    </div>
-                )}
-
-                {searchMode === 'discover' && (
+                <Link to="/recherche">Rechercher</Link>
 
                     <div className="genre-select">
                         <label htmlFor="genre">Choisir un genre:</label>
@@ -113,7 +74,6 @@ export default function Home() {
                             ))}
                         </select>
                     </div>
-                )}
 
                 <div className='flex flex-wrap'>
                     {movies.map((movie) => (
