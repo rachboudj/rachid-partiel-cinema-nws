@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import FilmDetailsCard from './components/FilmDetailCard';
 
 export default function filmDetails() {
     const { id } = useParams();
@@ -36,14 +37,9 @@ export default function filmDetails() {
             <h1>{movie.title}</h1>
             <Link to={`/`}>Retour</Link>
 
-            <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
+            <FilmDetailsCard
+                movie={movie}
             />
-            <p>{movie.overview}</p>
-            <p>Date de sortie : {movie.release_date}</p>
-            <p>Note : {movie.vote_average}</p>
-            <p>Genres : {movie.genres.map(genre => genre.name).join(', ')}</p>
 
             <div>
                 <h2>Acteurs</h2>
