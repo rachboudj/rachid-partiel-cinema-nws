@@ -2,10 +2,7 @@ import React from 'react';
 
 const GenreSelector = ({ selectedGenre, setSelectedGenre, genres }) => {
   return (
-    <div className="genre-select">
-      <label htmlFor="genre" className="block text-lg font-medium text-gray-700">
-        Choisir un genre:
-      </label>
+    <div className="mr-4">
       <select
         id="genre"
         value={selectedGenre || ''}

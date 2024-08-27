@@ -9,16 +9,16 @@ function truncateText(text, maxLength) {
 
 const FilmSearchCard = ({ movie }) => {
     return (
-        <div className="movie-card">
+        <div className="mt-6 w-33">
             <img
                 src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
                 alt={movie.title}
-                className="movie-poster"
+                className='rounded-md'
             />
             <div className="movie-info">
-                <h3>{movie.title}</h3>
-                <p><strong>Date de sortie:</strong> {movie.release_date}</p>
-                <p>{truncateText(movie.overview, 120)}</p>
+                <h3 className='mt-2 font-bold'>{movie.title}</h3>
+                <p className='text-sm mt-4'><strong>Date de sortie:</strong> {movie.release_date}</p>
+                <p className='w-56'>{truncateText(movie.overview, 120)}</p>
             </div>
         </div>
     );

@@ -9,11 +9,16 @@ function App() {
   return (
 
     <Router>
+        <div className='p-6'>
+      
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/recherche" element={<FilmSearch />} />
-        <Route path="/film/:id" element={<FilmDetails />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/recherche" element={<FilmSearch />} />
+          <Route path="/film/:id" element={<FilmDetails />} />
       </Routes>
+
+      </div>
+
     </Router>
   )
 }

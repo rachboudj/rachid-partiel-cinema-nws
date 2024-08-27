@@ -49,29 +49,38 @@ export default function Home() {
 
     return (
         <>
-            <>
-                <Link to="/recherche">Rechercher</Link>
-
-                <div className="genre-select">
-                    <GenreSelector
-                        selectedGenre={selectedGenre}
-                        setSelectedGenre={setSelectedGenre}
-                        genres={genres}
-                    />
-                </div>
-
-                <div className='flex flex-wrap'>
-                    {movies.map((movie) => (
-                        <FilmCard key={movie.id} movie={movie} />
-                    ))}
-                </div>
-
-                <Pagination
-                    currentPage={currentPage} 
-                    totalPages={totalPages} 
-                    onPageChange={handlePageChange} 
+            <div className='flex items-center justify-between'>
+                <GenreSelector
+                    selectedGenre={selectedGenre}
+                    setSelectedGenre={setSelectedGenre}
+                    genres={genres}
                 />
-            </>
+
+                <div>
+                    <button
+                        className="text-white bg-gradient-to-r bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                    >
+                        <Link
+                            to="/recherche"
+                        >Rechercher
+                        </Link>
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div className='mt-6 flex flex-wrap justify-between'>
+                {movies.map((movie) => (
+                    <FilmCard key={movie.id} movie={movie} />
+                ))}
+            </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
         </>
     )
 }

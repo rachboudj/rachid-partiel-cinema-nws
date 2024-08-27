@@ -42,21 +42,28 @@ export default function filmSearch() {
 
     return (
         <div>
-            <h1>Rechercher un film</h1>
-            <Link to="/">Retour</Link>
-            <div>
+            <div className='flex justify-between'>
+                <h1
+                className='font-black text-2xl'
+                >Rechercher un film</h1>
+                <Link 
+                className="text-white bg-gradient-to-r bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                to="/">Retour</Link>
+            </div>
+            
+            <div className='mt-10 flex justify-center'>
                 <SearchBar 
                     searchTerm={searchTerm} 
                     setSearchTerm={setSearchTerm} 
                 />
             </div>
 
-            <div className="results">
+            <div className="flex flex-wrap">
                 {movies.length === 0 ? (
                     <p>Aucun résultat trouvé.</p>
                 ) : (
                     movies.map((movie) => (
-                        <div key={movie.id} className="movie-card">
+                        <div key={movie.id} className="flex">
                             <Link to={`/film/${movie.id}`}>
                                 <FilmSearchCard 
                                     movie={movie}

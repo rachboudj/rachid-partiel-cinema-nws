@@ -34,36 +34,45 @@ export default function filmDetails() {
 
     return (
         <div>
-            <h1>{movie.title}</h1>
-            <Link to={`/`}>Retour</Link>
+            <div className='flex items-center justify-between'>
+                <h1 className='font-black text-2xl'>Détails du film</h1>
+                <Link
+                    className="text-white bg-gradient-to-r bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
+                    to={`/`}>Retour</Link>
+            </div>
 
             <FilmDetailsCard
                 movie={movie}
             />
 
             <div>
-                <h2>Acteurs</h2>
                 {actors.length === 0 ? (
                     <p>Aucun acteur disponible pour ce film.</p>
                 ) : (
-                    <div className="actors-list">
-                        {actors.slice(0, 10).map((actor) => (
-                            <div key={actor.id} className="actor">
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                                    alt={actor.name}
-                                    className="actor-img"
-                                />
-                                <p>{actor.name}</p>
-                                <p>Rôle : {actor.character}</p>
-                            </div>
-                        ))}
+                    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+                        <div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
+                            <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Les acteurs</h2>
+                        </div>
+
+                        <div class="flex flex-wrap">
+                            {actors.slice(0, 10).map((actor) => (
+                                <div key={actor.id} className="w-1/3 mt-6">
+                                    <div class="text-center text-gray-500 dark:text-gray-400">
+                                        <img class="mx-auto mb-4 w-36 h-36 rounded-full" src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`} alt={actor.name} />
+                                        <h3 class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                            <p>{actor.name}</p>
+                                        </h3>
+                                        <p>{actor.character}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
 
             <div>
-                <h2>Avis</h2>
+                <h2 className='text-2xl font-extrabold text-gray-900'>Avis</h2>
                 {reviews.length === 0 ? (
                     <p>Aucun avis disponible pour ce film.</p>
                 ) : (
