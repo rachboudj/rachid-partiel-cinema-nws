@@ -5,7 +5,6 @@ import axios from 'axios';
 function App() {
 
   const API_KEY = '18ffbdd4f338668948dfeecc71baa949';
-  const URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=fr-US&page=1`;
 
   const genres = [
     { id: 28, name: 'Action' },
@@ -15,44 +14,64 @@ function App() {
     { id: 80, name: 'Crime' },
   ];
 
-  const [moviesByGenre, setMoviesByGenre] = useState({});
+  const [movies, setMovies] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    const fetchMoviesByGenre = async () => {
-      const movies = {};
-      for (let genre of genres) {
+    const fetchMovies = async () => {
         try {
           const response = await axios.get(
-            `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre.id}&language=fr&page=1`
+            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=fr&page=${currentPage}`
           );
-          movies[genre.name] = response.data.results;
+          setMovies(response.data.results.slice(0, 10));
+        setTotalPages(response.data.total_pages);
         } catch (error) {
-          console.error(`Erreur lors de la récupération des films pour le genre ${genre.name}:`, error);
+          console.error(`Erreur lors de la récupération des films`, error);
         }
-      }
-      setMoviesByGenre(movies);
     };
 
-    fetchMoviesByGenre();
-  }, []);
+    fetchMovies();
+  }, [currentPage]);
+
+  const handlePageChange = (direction) => {
+    setCurrentPage((prev) => {
+      const newPage = prev + direction;
+      return newPage > 0 && newPage <= totalPages ? newPage : prev;
+    });
+  };
 
   return (
     <>
-      {(
-        genres.map((genre) => (
-          <div key={genre.id} className='flex flex-wrap'>
-            {moviesByGenre[genre.name]?.map((movie) => (
-              <div key={movie.id}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                  alt={movie.title}
-                />
-                <p>{movie.title}</p>
-              </div>
-            ))}
-          </div>
-        ))
-      )}
+          <>
+            <div className='flex flex-wrap'>
+              {movies.map((movie) => (
+                <div key={movie.id}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                  <p>{movie.title}</p>
+                </div>
+              ))}
+
+            </div>
+            <div>
+              <button
+                onClick={() => handlePageChange(-1)}
+                disabled={currentPage === 1}
+              >
+                Précédent
+              </button>
+              <span>Page {currentPage} sur {totalPages}</span>
+              <button
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === totalPages}
+              >
+                Suivant
+              </button>
+            </div>
+          </>
     </>
   )
 }
