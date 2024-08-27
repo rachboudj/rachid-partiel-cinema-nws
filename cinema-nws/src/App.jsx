@@ -18,16 +18,26 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchMode, setSearchMode] = useState('discover');
+
+  console.log(searchTerm)
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const genre = selectedGenre ? `&with_genres=${selectedGenre}` : '';
-        console.log(genre)
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=false&language=fr&page=${currentPage}&sort_by=popularity.desc${genre}`
+        let url;
 
-        );
+        if (searchMode === 'search') {
+          const searchQuery = searchTerm ? `&query=${encodeURIComponent(searchTerm)}` : '';
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=fr&page=${currentPage}${searchQuery}&include_adult=false`;
+        } else {
+          const genreQuery = selectedGenre ? `&with_genres=${selectedGenre}` : '';
+          url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=false&language=fr&page=${currentPage}&sort_by=popularity.desc${genreQuery}`;
+        }
+
+        const response = await axios.get(url);
+
         setMovies(response.data.results.slice(0, 10));
         setTotalPages(response.data.total_pages);
       } catch (error) {
@@ -36,7 +46,7 @@ function App() {
     };
 
     fetchMovies();
-  }, [currentPage, selectedGenre]);
+  }, [currentPage, selectedGenre, searchTerm, searchMode]);
 
   const handlePageChange = (direction) => {
     setCurrentPage((prev) => {
@@ -48,21 +58,64 @@ function App() {
   return (
     <>
       <>
-        <div className="genre-select">
-          <label htmlFor="genre">Choisir un genre:</label>
-          <select
-            id="genre"
-            value={selectedGenre || ''}
-            onChange={(e) => setSelectedGenre(e.target.value)}
+        <div className="search-mode">
+        {searchMode === 'discover' && (
+          <button
+            onClick={() => {
+              setSearchMode('search');
+              setCurrentPage(1);
+            }}
+            disabled={searchMode === 'search'}
           >
-            <option value="">Tous les genres</option>
-            {genres.map((genre) => (
-              <option key={genre.id} value={genre.id}>
-                {genre.name}
-              </option>
-            ))}
-          </select>
+            Recherche
+          </button>
+          )}
         </div>
+
+        {searchMode === 'search' && (
+          <div>
+            <input
+              type="text"
+              placeholder="Rechercher un film..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+
+            <button
+              onClick={() => {
+                setSearchMode('discover');
+                setCurrentPage(1);
+                setSearchTerm('');
+              }}
+              disabled={searchMode === 'discover'}
+            >
+              Découverte
+            </button>
+          </div>
+        )}
+
+        {searchMode === 'discover' && (
+
+          <div className="genre-select">
+            <label htmlFor="genre">Choisir un genre:</label>
+            <select
+              id="genre"
+              value={selectedGenre || ''}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+            >
+              <option value="">Tous les genres</option>
+              {genres.map((genre) => (
+                <option key={genre.id} value={genre.id}>
+                  {genre.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <div className='flex flex-wrap'>
           {movies.map((movie) => (
             <div key={movie.id}>
@@ -73,8 +126,8 @@ function App() {
               <p>{movie.title}</p>
             </div>
           ))}
-
         </div>
+
         <div>
           <button
             onClick={() => handlePageChange(-1)}
