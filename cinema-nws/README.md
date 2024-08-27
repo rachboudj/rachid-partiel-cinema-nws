@@ -15,8 +15,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur v
 
    ```bash
    git clone https://github.com/rachboudj/rachid-partiel-cinema-nws.git 
-   cd rachid-partiel-cinema-nws
-
+   cd rachid-partiel-cinema-nws/cinema-nws/
 
 2. **Installez les dépendances**
 
