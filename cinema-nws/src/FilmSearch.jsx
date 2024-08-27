@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import SearchBar from './components/SearchBar';
+import Pagination from './components/Pagination';
+import FilmSearchCard from './components/FilmSearchCard';
 
 
 export default function filmSearch() {
@@ -41,15 +44,10 @@ export default function filmSearch() {
         <div>
             <h1>Rechercher un film</h1>
             <Link to="/">Retour</Link>
-            <div className="search-bar">
-                <input
-                    type="text"
-                    placeholder="Rechercher un film..."
-                    value={searchTerm}
-                    onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        setCurrentPage(1);
-                    }}
+            <div>
+                <SearchBar 
+                    searchTerm={searchTerm} 
+                    setSearchTerm={setSearchTerm} 
                 />
             </div>
 
@@ -60,16 +58,9 @@ export default function filmSearch() {
                     movies.map((movie) => (
                         <div key={movie.id} className="movie-card">
                             <Link to={`/film/${movie.id}`}>
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                                    alt={movie.title}
-                                    className="movie-poster"
+                                <FilmSearchCard 
+                                    movie={movie}
                                 />
-                                <div className="movie-info">
-                                    <h3>{movie.title}</h3>
-                                    <p><strong>Date de sortie:</strong> {movie.release_date}</p>
-                                    <p>{movie.overview}</p>
-                                </div>
                             </Link>
                         </div>
                     ))
@@ -77,21 +68,11 @@ export default function filmSearch() {
             </div>
 
             {totalPages > 1 && (
-                <div className="pagination">
-                    <button
-                        onClick={() => handlePageChange(-1)}
-                        disabled={currentPage === 1}
-                    >
-                        Précédent
-                    </button>
-                    <span>Page {currentPage} sur {totalPages}</span>
-                    <button
-                        onClick={() => handlePageChange(1)}
-                        disabled={currentPage === totalPages}
-                    >
-                        Suivant
-                    </button>
-                </div>
+                <Pagination
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                onPageChange={handlePageChange} 
+            />
             )}
         </div>
     );
